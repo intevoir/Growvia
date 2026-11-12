@@ -1,0 +1,45 @@
+module.exports = {
+  apps: [
+    {
+      name: 'growvia',
+      script: 'index.js',
+      cwd: __dirname,
+      env: {
+        NODE_ENV: 'production',
+      },
+      autorestart: true,
+      max_restarts: 10,
+      min_uptime: '10s',
+      watch: false,
+      ignore_watch: ['node_modules', '.git'],
+      error_file: 'logs/err.log',
+      out_file: 'logs/out.log',
+      pid_file: 'logs/pid.pid',
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+    },
+    {
+      name: 'growvia-webhook',
+      script: 'deploy-webhook.js',
+      cwd: __dirname,
+      autorestart: true,
+      max_restarts: 10,
+      min_uptime: '10s',
+      watch: false,
+      error_file: 'logs/webhook-err.log',
+      out_file: 'logs/webhook-out.log',
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+    },
+    {
+      // Quick tunnel + sinkron URL hook GitHub. Tidak perlu jika memakai named tunnel / domain sendiri.
+      name: 'growvia-tunnel',
+      script: 'tunnel.js',
+      cwd: __dirname,
+      autorestart: true,
+      restart_delay: 5000,
+      watch: false,
+      error_file: 'logs/tunnel-err.log',
+      out_file: 'logs/tunnel-out.log',
+      log_date_format: 'YYYY-MM-DD HH:mm:ss Z',
+    },
+  ],
+};

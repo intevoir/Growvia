@@ -1,0 +1,7 @@
+node_modules/
+.env
+account/
+panel.json
+logs/
+*.log
+data/server-clock.json

@@ -1,0 +1,24 @@
+{
+  "name": "growvia-bot",
+  "version": "1.0.0",
+  "description": "Growvia - Discord farming bot game (welcome panel + private farming thread)",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "check": "node --check index.js && node --check src/index.js",
+    "test": "node test/game-check.js && node test/balance-check.js && node test/progress-check.js && node test/fishing-check.js && node test/dungeon-check.js && node test/ui-check.js && node test/route-check.js && node test/clock-check.js && node test/boosts-check.js && node test/feedback-check.js && node test/commands-check.js && node test/write-behind-check.js && node test/flow-check.js && node test/deploy-note-check.js && node test/webhook-check.js",
+    "sim": "node scripts/balance-sim.js",
+    "migrate": "node scripts/migrate.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.15.0",
+    "dotenv": "^16.4.5",
+    "@supabase/supabase-js": "^2.39.0",
+    "ioredis": "^5.4.0"
+  }
+}

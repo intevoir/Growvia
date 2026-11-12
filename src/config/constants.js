@@ -1,0 +1,243 @@
+'use strict';
+
+const { MessageFlags } = require('discord.js');
+
+/** Channel (diisi lewat .env) */
+const ACCOUNT_CHANNEL_ID = process.env.ACCOUNT_CHANNEL_ID;
+const FARM_CHANNEL_ID = process.env.FARM_CHANNEL_ID;
+const SHOP_CHANNEL_ID = process.env.SHOP_CHANNEL_ID;
+const MINING_CHANNEL_ID = process.env.MINING_CHANNEL_ID;
+const MINING_SHOP_CHANNEL_ID = process.env.MINING_SHOP_CHANNEL_ID;
+const BACKPACK_CHANNEL_ID = process.env.BACKPACK_CHANNEL_ID;
+const FISHING_CHANNEL_ID = process.env.FISHING_CHANNEL_ID;
+const FISHING_SHOP_CHANNEL_ID = process.env.FISHING_SHOP_CHANNEL_ID;
+const DUNGEON_CHANNEL_ID = process.env.DUNGEON_CHANNEL_ID;
+const DUNGEON_SHOP_CHANNEL_ID = process.env.DUNGEON_SHOP_CHANNEL_ID;
+const HALL_CHANNEL_ID = process.env.HALL_CHANNEL_ID;
+const BOOSTS_CHANNEL_ID = process.env.BOOSTS_CHANNEL_ID;
+const SUGGEST_CHANNEL_ID = process.env.SUGGEST_CHANNEL_ID;
+const LOG_CHANNEL_ID = process.env.LOG_CHANNEL_ID;
+
+/** Custom ID: akun & thread */
+const CREATE_ACCOUNT_CUSTOM_ID = 'create_account';
+const START_FARMING_CUSTOM_ID = 'start_farming';
+const START_MINING_CUSTOM_ID = 'start_mining';
+const START_FISHING_CUSTOM_ID = 'start_fishing';
+const START_DUNGEON_CUSTOM_ID = 'start_dungeon';
+const LANGUAGE_OPEN_CUSTOM_ID = 'lang_open';
+const LANGUAGE_SET_PREFIX = 'lang_set:';
+
+/** Custom ID: thread farming */
+const FARM_PLANT_OPEN_CUSTOM_ID = 'farm_plant';
+const FARM_PLANT_SELECT_CUSTOM_ID = 'farm_plant_select';
+const FARM_PLANT_DO_PREFIX = 'farm_plant_do:';
+const FARM_HARVEST_CUSTOM_ID = 'farm_harvest';
+const FARM_INVENTORY_CUSTOM_ID = 'farm_inventory';
+const FARM_BACK_CUSTOM_ID = 'farm_back';
+const FARM_REFRESH_CUSTOM_ID = 'farm_refresh';
+const FARM_AUTO_CUSTOM_ID = 'farm_auto';
+
+/** Custom ID: thread mining */
+const MINE_EXPEDITION_OPEN_CUSTOM_ID = 'mine_open';
+const MINE_EXPEDITION_SELECT_CUSTOM_ID = 'mine_select';
+const MINE_CLAIM_CUSTOM_ID = 'mine_claim';
+const MINE_INVENTORY_CUSTOM_ID = 'mine_inventory';
+const MINE_BACK_CUSTOM_ID = 'mine_back';
+const MINE_REFRESH_CUSTOM_ID = 'mine_refresh';
+const MINE_AUTO_CUSTOM_ID = 'mine_auto';
+
+/** Custom ID: toko tani */
+const SHOP_BUY_OPEN_CUSTOM_ID = 'shop_buy_open';
+const SHOP_BUY_BACK_CUSTOM_ID = 'shop_buy_back';
+const SHOP_BUY_SELECT_CUSTOM_ID = 'shop_buy_select';
+const SHOP_BUY_DO_PREFIX = 'shop_buy_do:';
+const SHOP_SELL_OPEN_CUSTOM_ID = 'shop_sell_open';
+const SHOP_SELL_ALL_CUSTOM_ID = 'shop_sell_all';
+const SHOP_SELL_SELECT_CUSTOM_ID = 'shop_sell_select';
+const SHOP_PLOT_OPEN_CUSTOM_ID = 'shop_plot_open';
+const SHOP_PLOT_BUY_PREFIX = 'shop_plot_buy:';
+const SHOP_TOOL_OPEN_CUSTOM_ID = 'shop_tool_open';
+const SHOP_TOOL_BUY_PREFIX = 'shop_tool_buy:';
+
+/** Custom ID: toko tambang */
+const MINING_SHOP_SELL_OPEN_CUSTOM_ID = 'mshop_sell_open';
+const MINING_SHOP_SELL_ALL_CUSTOM_ID = 'mshop_sell_all';
+const MINING_SHOP_SELL_SELECT_CUSTOM_ID = 'mshop_sell_select';
+const MINING_SHOP_TOOL_OPEN_CUSTOM_ID = 'mshop_tool_open';
+const MINING_SHOP_TOOL_BUY_PREFIX = 'mshop_tool_buy:';
+
+/** Custom ID: toko ransel / armory */
+const BACKPACK_UPGRADE_OPEN_CUSTOM_ID = 'bp_open';
+const BACKPACK_UPGRADE_BUY_PREFIX = 'bp_buy:';
+const BACKPACK_REFRESH_CUSTOM_ID = 'bp_refresh';
+const BACKPACK_DISCARD_OPEN_CUSTOM_ID = 'bp_discard_open';
+const BACKPACK_DISCARD_SELECT_CUSTOM_ID = 'bp_discard_select';
+const BACKPACK_DISCARD_DO_PREFIX = 'bp_discard_do:';
+const BACKPACK_DISCARD_BACK_CUSTOM_ID = 'bp_discard_back';
+
+/** Custom ID: thread fishing */
+const FISH_SESSION_OPEN_CUSTOM_ID = 'fish_open';
+const FISH_SESSION_SELECT_CUSTOM_ID = 'fish_select';
+const FISH_SESSION_AMOUNT_PREFIX = 'fish_amt:';
+const FISH_REEL_CUSTOM_ID = 'fish_reel';
+const FISH_INVENTORY_CUSTOM_ID = 'fish_inv';
+const FISH_REFRESH_CUSTOM_ID = 'fish_refresh';
+const FISH_BACK_CUSTOM_ID = 'fish_back';
+
+/** Custom ID: toko pancing */
+const FISHING_SHOP_BUY_OPEN_CUSTOM_ID = 'fshop_buy_open';
+const FISHING_SHOP_BUY_SELECT_CUSTOM_ID = 'fshop_buy_select';
+const FISHING_SHOP_BUY_DO_PREFIX = 'fshop_buy_do:';
+const FISHING_SHOP_SELL_OPEN_CUSTOM_ID = 'fshop_sell_open';
+const FISHING_SHOP_SELL_ALL_CUSTOM_ID = 'fshop_sell_all';
+const FISHING_SHOP_SELL_SELECT_CUSTOM_ID = 'fshop_sell_select';
+const FISHING_SHOP_BUY_BACK_CUSTOM_ID = 'fshop_buy_back';
+const FISHING_SHOP_TOOL_OPEN_CUSTOM_ID = 'fshop_tool_open';
+const FISHING_SHOP_TOOL_BUY_PREFIX = 'fshop_tool_buy:';
+
+/** Custom ID: thread dungeon */
+const DUNGEON_SELECT_CUSTOM_ID = 'dg_select';
+const DUNGEON_ACTION_PREFIX = 'dg_act:';
+const DUNGEON_POTION_SELECT_CUSTOM_ID = 'dg_potion';
+const DUNGEON_BACK_CUSTOM_ID = 'dg_back';
+
+/** Custom ID: toko dungeon */
+const DUNGEON_SHOP_GEAR_OPEN_CUSTOM_ID = 'dshop_gear_open';
+const DUNGEON_SHOP_GEAR_BUY_PREFIX = 'dshop_gear_buy:';
+const DUNGEON_SHOP_POTION_OPEN_CUSTOM_ID = 'dshop_potion_open';
+const DUNGEON_SHOP_POTION_BUY_PREFIX = 'dshop_potion_buy:';
+const DUNGEON_SHOP_SELL_OPEN_CUSTOM_ID = 'dshop_sell_open';
+const DUNGEON_SHOP_SELL_ALL_CUSTOM_ID = 'dshop_sell_all';
+
+/** Custom ID: Hall (profil, quest, achievement, koleksi, peringkat, ascension) */
+const HALL_OPEN_PREFIX = 'hall_open:';
+const HALL_NAV_PREFIX = 'hall_nav:';
+const HALL_CLAIM_CUSTOM_ID = 'hall_claim';
+const HALL_ACH_SELECT_CUSTOM_ID = 'hall_ach_sel';
+const HALL_COLL_SELECT_CUSTOM_ID = 'hall_coll_sel';
+const HALL_TOP_SELECT_CUSTOM_ID = 'hall_top_sel';
+const HALL_ASCEND_CUSTOM_ID = 'hall_asc';
+const HALL_ASCEND_DO_CUSTOM_ID = 'hall_asc_do';
+const HALL_BOOST_BUY_PREFIX = 'hall_boost_buy:';
+const BOOSTS_OPEN_CUSTOM_ID = 'boosts_open';
+const FB_OPEN_SUGGEST_CUSTOM_ID = 'fb_open_suggest';
+const FB_OPEN_REPORT_CUSTOM_ID = 'fb_open_report';
+
+/** Discord */
+const THREAD_AUTO_ARCHIVE_DURATION = 60;
+const THREAD_IDLE_CLOSE_MS = 5 * 60 * 1000;
+const GROWVIA_GREEN = 0x4caf50;
+const GROWVIA_BROWN = 0x8d6e63;
+const GROWVIA_PURPLE = 0x9c27b0;
+const GROWVIA_BLUE = 0x2196f3;
+const VIAZ_EMOJI = '<:viaz:1567397850990776440>';
+/** Flag balasan ephemeral (pengganti `ephemeral: true` yang sudah deprecated). */
+const EPHEMERAL = MessageFlags.Ephemeral;
+
+module.exports = {
+  ACCOUNT_CHANNEL_ID,
+  FARM_CHANNEL_ID,
+  SHOP_CHANNEL_ID,
+  MINING_CHANNEL_ID,
+  MINING_SHOP_CHANNEL_ID,
+  BACKPACK_CHANNEL_ID,
+  FISHING_CHANNEL_ID,
+  FISHING_SHOP_CHANNEL_ID,
+  DUNGEON_CHANNEL_ID,
+  DUNGEON_SHOP_CHANNEL_ID,
+  HALL_CHANNEL_ID,
+  LOG_CHANNEL_ID,
+  HALL_OPEN_PREFIX,
+  HALL_NAV_PREFIX,
+  HALL_CLAIM_CUSTOM_ID,
+  HALL_ACH_SELECT_CUSTOM_ID,
+  HALL_COLL_SELECT_CUSTOM_ID,
+  HALL_TOP_SELECT_CUSTOM_ID,
+  HALL_ASCEND_CUSTOM_ID,
+  HALL_ASCEND_DO_CUSTOM_ID,
+  HALL_BOOST_BUY_PREFIX,
+  BOOSTS_CHANNEL_ID,
+  BOOSTS_OPEN_CUSTOM_ID,
+  SUGGEST_CHANNEL_ID,
+  FB_OPEN_SUGGEST_CUSTOM_ID,
+  FB_OPEN_REPORT_CUSTOM_ID,
+  CREATE_ACCOUNT_CUSTOM_ID,
+  START_FARMING_CUSTOM_ID,
+  START_MINING_CUSTOM_ID,
+  START_FISHING_CUSTOM_ID,
+  START_DUNGEON_CUSTOM_ID,
+  DUNGEON_SELECT_CUSTOM_ID,
+  DUNGEON_ACTION_PREFIX,
+  DUNGEON_POTION_SELECT_CUSTOM_ID,
+  DUNGEON_BACK_CUSTOM_ID,
+  DUNGEON_SHOP_GEAR_OPEN_CUSTOM_ID,
+  DUNGEON_SHOP_GEAR_BUY_PREFIX,
+  DUNGEON_SHOP_POTION_OPEN_CUSTOM_ID,
+  DUNGEON_SHOP_POTION_BUY_PREFIX,
+  DUNGEON_SHOP_SELL_OPEN_CUSTOM_ID,
+  DUNGEON_SHOP_SELL_ALL_CUSTOM_ID,
+  LANGUAGE_OPEN_CUSTOM_ID,
+  LANGUAGE_SET_PREFIX,
+  FARM_PLANT_OPEN_CUSTOM_ID,
+  FARM_PLANT_SELECT_CUSTOM_ID,
+  FARM_PLANT_DO_PREFIX,
+  FARM_HARVEST_CUSTOM_ID,
+  FARM_INVENTORY_CUSTOM_ID,
+  FARM_BACK_CUSTOM_ID,
+  FARM_REFRESH_CUSTOM_ID,
+  FARM_AUTO_CUSTOM_ID,
+  MINE_EXPEDITION_OPEN_CUSTOM_ID,
+  MINE_EXPEDITION_SELECT_CUSTOM_ID,
+  MINE_CLAIM_CUSTOM_ID,
+  MINE_INVENTORY_CUSTOM_ID,
+  MINE_BACK_CUSTOM_ID,
+  MINE_REFRESH_CUSTOM_ID,
+  MINE_AUTO_CUSTOM_ID,
+  SHOP_BUY_OPEN_CUSTOM_ID,
+  SHOP_BUY_BACK_CUSTOM_ID,
+  SHOP_BUY_SELECT_CUSTOM_ID,
+  SHOP_BUY_DO_PREFIX,
+  SHOP_SELL_OPEN_CUSTOM_ID,
+  SHOP_SELL_ALL_CUSTOM_ID,
+  SHOP_SELL_SELECT_CUSTOM_ID,
+  SHOP_PLOT_OPEN_CUSTOM_ID,
+  SHOP_PLOT_BUY_PREFIX,
+  SHOP_TOOL_OPEN_CUSTOM_ID,
+  SHOP_TOOL_BUY_PREFIX,
+  MINING_SHOP_SELL_OPEN_CUSTOM_ID,
+  MINING_SHOP_SELL_ALL_CUSTOM_ID,
+  MINING_SHOP_SELL_SELECT_CUSTOM_ID,
+  MINING_SHOP_TOOL_OPEN_CUSTOM_ID,
+  MINING_SHOP_TOOL_BUY_PREFIX,
+  BACKPACK_UPGRADE_OPEN_CUSTOM_ID,
+  BACKPACK_UPGRADE_BUY_PREFIX,
+  BACKPACK_REFRESH_CUSTOM_ID,
+  BACKPACK_DISCARD_OPEN_CUSTOM_ID,
+  BACKPACK_DISCARD_SELECT_CUSTOM_ID,
+  BACKPACK_DISCARD_DO_PREFIX,
+  BACKPACK_DISCARD_BACK_CUSTOM_ID,
+  FISH_SESSION_OPEN_CUSTOM_ID,
+  FISH_SESSION_SELECT_CUSTOM_ID,
+  FISH_SESSION_AMOUNT_PREFIX,
+  FISH_REEL_CUSTOM_ID,
+  FISH_INVENTORY_CUSTOM_ID,
+  FISH_REFRESH_CUSTOM_ID,
+  FISH_BACK_CUSTOM_ID,
+  FISHING_SHOP_SELL_SELECT_CUSTOM_ID,
+  FISHING_SHOP_BUY_BACK_CUSTOM_ID,
+  FISHING_SHOP_BUY_OPEN_CUSTOM_ID,
+  FISHING_SHOP_BUY_SELECT_CUSTOM_ID,
+  FISHING_SHOP_BUY_DO_PREFIX,
+  FISHING_SHOP_SELL_OPEN_CUSTOM_ID,
+  FISHING_SHOP_SELL_ALL_CUSTOM_ID,
+  FISHING_SHOP_TOOL_OPEN_CUSTOM_ID,
+  FISHING_SHOP_TOOL_BUY_PREFIX,
+  THREAD_AUTO_ARCHIVE_DURATION,
+  THREAD_IDLE_CLOSE_MS,
+  GROWVIA_GREEN,
+  GROWVIA_BROWN,
+  GROWVIA_PURPLE,
+  GROWVIA_BLUE,
+  VIAZ_EMOJI,
+  EPHEMERAL,
+};
