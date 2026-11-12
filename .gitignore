@@ -5,3 +5,4 @@ panel.json
 logs/
 *.log
 data/server-clock.json
+.github/workflows/
